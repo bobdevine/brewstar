@@ -1,1868 +1,715 @@
-<!-- BrewStar homebrew calculator -->
-<!- (http://brewstar.sourceforge.net) -->
-<!- Copyright 2010 Bob Devine. All rights reserved. -->
-
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>BrewStar</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="icon" type="image/png" href="./beericon.png">
+<link rel="stylesheet" type="text/css" href="brewstar.css"/>
+
+<script type="text/javascript" charset="utf-8" src="brewstar.js"></script>
 <script type="text/javascript" charset="utf-8" src="brewstar.json"></script>
 
-<style type="text/css">
-div.tabContent { border: 1px solid #c9c3ba; background-color: #f1f0ee;}
-
-#navcontainer {
-    clear:left;
-    float:left;
-    padding:0;
-    width:100%;
-    overflow:hidden;
-    font-family:Verdana, Geneva, sans-serif;
-}
-#navcontainer ul {
-    float:left;
-    margin:0;
-    padding:0;
-    list-style:none;
-    position:relative;
-    left:50%;
-    text-align:center;
-}
-#navcontainer ul li {
-    display:block;
-    float:left;
-    list-style:none;
-    margin:5px 5px 0 5px;
-    padding:0;
-    position:relative;
-    right:50%;
-}
-#navcontainer ul li a {
-    display:block;
-    float:left;
-    margin:0 1px;
-    padding:5px 5px;
-    background:#fff;
-    text-decoration:none;
-    color:#000;
-    border:1px solid #369;
-    position:relative;
-    bottom:1px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-}
-#navcontainer ul li a:hover { background:#5a87dd;}
-#navcontainer .active {background:#3ff; color:#000;  font-weight:bold;}
-</style>
-
-<style type="text/css">
-.logo
-{
-    font-family:Verdana,Geneva,sans-serif;
-    letter-spacing:-2px;
-    font-weight:bold;
-    font-size:32px;
-    background-color : white;
-    border-style : outset;
-    border-color: blue;
-    border-width:7px;
-    height:75px;
-    width:330px;
-    color:green;
-    text-align:center;
-}
-</style>
-
-<style type="text/css">
-a.tooltip {
-    text-decoration: none
-    }
-
-a.tooltip:hover {
-    position: relative;
-    cursor: help;
-    text-decoration: none
-}
-
-a.tooltip span {
-    display: none
-}
-
-a.tooltip:hover span {
-    display: block;
-    position: absolute; 
-    left: -100px;
-    width: 200px;
-    padding: 5px; 
-    margin: 10px; 
-    z-index: 100;
-    background: #9FDAEE;
-    color:#00000;
-    border: 1px solid #955F1F;
-}
-</style>
-
-<style type="text/css">
-table.configTable
-{
-    border: 1px solid #aec3b6;
-    background-color: #eeeeee;
-}
-table.configTable td {
-    border-width: 0px;
-    padding: 10px;
-    background-color: white;
-    text-align:left;
-}
-table.configTable td input {
-    color:blue;
-    font-size:12px;
-}
-table.configTable td select {
-    color:blue;
-}
-
-table.resultTable
-{
-    border-width: 1px;
-    border-style: outset;
-    border-color: green;
-    border-collapse: collapse;
-    background-color: rgb(250, 240, 230);
-}
-table.resultTable th {
-    background: #2293FF;
-    color: #FFFFFF;
-    font-size: 110%;
-    border-top:1px solid #2293FF;
-    border-right:1px solid #2293FF;
-    border-style: inset;
-    border-color: gray;
-}
-table.resultTable td {
-    padding: 1px;
-    border-style: inset;
-    border-color: gray;
-    background-color: #D9ECFF;
-    border-right:1px solid #2293FF;
-}
-
-table.planTable
-{
-    border-width: 1px;
-    border-style: outset;
-    border-color: green;
-    border-collapse: collapse;
-    background-color: #FAFAFA;
-}
-table.planTable th {
-    font-size: 110%;
-    border: 1px #ccc solid;
-    background-color: #EEEEFF;
-}
-table.planTable td {
-    padding: 4px;
-    border: 1px #ccc solid;
-}
-
-table.styleTable
-{
-    border-width: 1px;
-    border-collapse: collapse;
-}
-table.styleTable th {
-    background: #2293FF;
-    color: #FFFFFF;
-    font-size: 110%;
-    border-right:1px solid #FFF;
-    border-style: inset;
-}
-table.styleTable td {
-    padding: 1px;
-    border-style: inset;
-    background-color: #D9ECFF;
-    border:1px solid #2293FF;
-}
-</style>
-
-<style type="text/css">
-.ingredientlist {
-    float:left;
-    width:90%;
-    margin:10px;
-}
-
-.ingredientlist ul {
-    list-style-type:none;
-    width:100%;
-    margin:5px;
-    padding:0;
-    text-align:left;
-}
-
-.ingredientlist ul li {
-    list-style:none;
-    margin:5px;
-}
-
-.ingredientlist ul li a {
-    display:block;
-    margin:3px;
-    padding:8px;
-    background:#fff;
-    text-decoration:none;
-    color:#000;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-}
-.ingredientlist ul li a:hover { background:#5a87dd;}
-</style>
-
-<style type="text/css">
-#plancontent h1, h2, h3, li {
-    color: #400400;
-}
-
-#plancontent h1 {
-    font-size: 20px;
-}
-
-#plancontent h2 {
-    font-size: 18px;
-}
-
-#plancontent h3 {
-    font-size: 16px;
-}
-
-#plancontent p {
-    margin-bottom: 10px;
-}
-</style>
-
-<script language="Javascript" type="text/javascript">
-var tabArray = ["tabrecipe", "tabstyles", "tabplan"];
-var divArray = ["divrecipe", "divstyles", "divplan"];
-
-function setclass(objId, newClass)
-{
-   if (document.layers)
-   {
-      document.layers[objId].className = newClass;
-   }
-   else if (document.all)
-   {
-      document.all[objId].className = newClass;
-   }
-   else if (document.getElementById)
-   {
-      document.getElementById(objId).className = newClass;
-   }
-}
-
-function showTab(idx)
-{
-   for (i=0;i<divArray.length;i++){
-      if (i == idx){
-        setclass(tabArray[i], "active");
-        document.getElementById(divArray[i]).style.display = "block";
-      } else {
-        setclass(tabArray[i], "");
-        document.getElementById(divArray[i]).style.display = "none";
-      } 
-   } 
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function getIngredientWeight(what, frm, inp)
-{
-    var weight = 0.0;
-
-    if ( (what == 'Malt')
-      || (what == 'Cara/Crystal Malt')
-      || (what == 'Extract')
-      || (what == 'Sugar')
-      || (what == 'Unmalted Grain') )
-    {
-	if (frm.cu.value == 'us') {
-	    weight = parseFloat(inp[0].value) + parseFloat(inp[1].value)/16;
-	} else if (frm.cu.value == 'metric') {
-	    weight = parseFloat(inp[0].value) + parseFloat(inp[1].value)/1000;
-	    weight = weight * 2.2; // kg -> lb
-	}
-    }
-    else if ( (what == 'Roasted Malt')
-	   || (what == 'Specialty Malt')
-           || (what == 'Misc') )
-    {
-	if (frm.cu.value == 'us') {
-	    weight = parseFloat(inp[0].value)/16;
-	} else if (frm.cu.value == 'metric') {
-	    weight = parseFloat(inp[0].value)/1000;
-	    weight = weight * 2.2; // kg -> lb
-	}
-    }
-    return weight;
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function getIngredientList(what)
-{
-    switch (what) {
-       case 'Yeast':             list = Data.Yeasts; break;
-       case 'Hops':              list = Data.Hops; break;
-       case 'Malt':        list = Data.Malts; break;
-       case 'Cara/Crystal Malt': list = Data.CaraMalts; break;
-       case 'Roasted Malt':      list = Data.RoastMalts; break;
-       case 'Specialty Malt':    list = Data.SpecMalts; break;
-       case 'Unmalted Grain':    list = Data.UnmaltedGrains; break;
-       case 'Extract':           list = Data.Extracts; break;
-       case 'Sugar':             list = Data.Sugars; break;
-       case 'Water Treatment':   list = Data.WaterTreatment; break;
-       case 'Misc':              list = Data.Misc; break;
-    }
-
-    return list;
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function tooltipOn(t)
-{
-    var idx = t.parentNode.parentNode.rowIndex;
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-    var cells = rs[idx].getElementsByTagName('td');
-    var what = cells[2].textContent;
-    var list = getIngredientList(what);
-    var sel = cells[3].getElementsByTagName('select');
-    var info = list[sel.item(0).selectedIndex].info;
-
-    var dd = document.getElementById("tooltip" + idx);
-    if (dd != null)
-        dd.innerHTML = info;
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function SRMcolor(srm)
-{
-    // browser-safe colors for "1" to "opaque"
-    // SRM == Lovibond, up to amber
-    if (srm <= 1) return "#F3F993";
-    if (srm <= 2) return "#F5F75C";
-    if (srm <= 3) return "#F6F513";
-    if (srm <= 4) return "#EAE615";
-    if (srm <= 5) return "#E0D01B";
-    if (srm <= 6) return "#D9C33C";
-    if (srm <= 7) return "#C9A732";
-    if (srm <= 8) return "#C0943A";
-    if (srm <= 9) return "#BE8C3A";
-    if (srm <= 10) return "#BE823A";
-    if (srm <= 11) return "#BE7837";
-    if (srm <= 12) return "#BE7038";
-    if (srm <= 13) return "#BC6733";
-    if (srm <= 14) return "#AC5D34";
-    if (srm <= 15) return "#A85839";
-    if (srm <= 16) return "#A05735";
-    if (srm <= 18) return "#6C3B1F";
-    if (srm <= 20) return "#5D341A";
-    if (srm <= 22) return "#4A2727";
-    if (srm <= 23) return "#361F1B";
-    if (srm <= 25) return "#231716";
-    if (srm <= 26) return "#19100F";
-    if (srm <= 28) return "#120D0C";
-    return "#050B0A";
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function makePlan()
-{
-    var msg = "";
-    var hasYeast = false;
-    var hasHops = false;
-    var hasSteepable = false;
-    var weightIngredients = 0.0;
-    var needsMash = false;
-
-    var frm = document.getElementById("RecipeForm");
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-
-    if (rs.length == 1)
-    {
-        msg += "<br>No ingredients in recipe.";
-    }
-
-    // check for yeast & hops
-    // total the weight of other ingredients
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if (what == 'Yeast')
-	{
-            hasYeast = true;
-	}
-	else if (what == 'Hops')
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-            var weight = parseFloat(inp[0].value);
-            if (weight > 0)
-                hasHops = true;
-	}
-	else if (what == 'Malt')
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel4 = cells[4].getElementsByTagName('select');
-	    if (sel4.item(0).value == "mash")
-	    {
-		needsMash = true;
-	    }
-            weightIngredients += getIngredientWeight(what,frm,inp);
-	}
-	else if (  (what == 'Roasted Malt')
-                || (what == 'Specialty Malt')
-                || (what == 'Cara/Crystal Malt') )
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-            weightIngredients += getIngredientWeight(what,frm,inp);
-            hasSteepable = true;
-	}
-	else if (  (what == 'Extract')
-                || (what == 'Sugar')
-                || (what == 'Unmalted Grain') )
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-            weightIngredients += getIngredientWeight(what,frm,inp);
-	}
-	else if (what == 'Water Treatment')
-	{
-	}
-	else if (what == 'Misc')
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-            weightIngredients += getIngredientWeight(what,frm,inp);
-	}
-    }
-
-    var grav = document.getElementById("calcGravityValue").firstChild.data;
-    var bitt = document.getElementById("calcBitternessValue").firstChild.data;
-    var colr = document.getElementById("calcColorValue").firstChild.data;
-    var alco = document.getElementById("calcAlcoholValue").firstChild.data;
-
-    if (frm.recipename.value == '')
-    {
-        msg += "<br>Missing beer recipe name";
-        var nm = document.getElementById("recipename");
-        nm.style = "border: 1px solid #900; background-color:lightyellow;";
-    } else {
-        var nm = document.getElementById("recipename");
-        nm.style = "border: 1px solid #369; background-color:white;";
-    }
-
-    if (! hasYeast)
-    {
-        msg += "<br>Missing yeast";
-        var yeast = document.getElementById("yeastbutton");
-        yeast.style = "border: 1px solid #900; background-color:lightyellow;";
-    } else {
-        var yeast = document.getElementById("yeastbutton");
-        yeast.style = "border: 1px solid #369; background-color:white;";
-    }
-
-    if (! hasHops)
-    {
-        msg += "<br>Missing hops";
-        var hops = document.getElementById("hopsbutton");
-        hops.style = "border: 1px solid #900; background-color:lightyellow;";
-    } else {
-        var hops = document.getElementById("hopsbutton");
-        hops.style = "border: 1px solid #369; background-color:white;";
-    }
-
-
-    // some styles have values of 'varies'
-    var sty = document.getElementById("bjcpstyle").value;
-    var styleOG = Data.Styles[sty].gravity.split("-");
-    var styleIBU = Data.Styles[sty].bitterness.split("-");
-    var styleSRM = Data.Styles[sty].color.split("-");
-
-    if (grav < parseFloat(styleOG[0]))
-    {
-        msg += "<br>OG is below style guide of " + styleOG[0];
-        var malt = document.getElementById("maltbutton");
-        malt.style = "border: 1px solid #900; background-color:lightyellow;";
-    }
-    else if (grav > parseFloat(styleOG[1]))
-    {
-        msg += "<br>OG is above style guide of " + styleOG[1] + " for " + Data.Styles[sty].name;
-    }
-    else
-    {
-        var malt = document.getElementById("maltbutton");
-        malt.style = "border: 1px solid #369; background-color:white;";
-    }
-
-    if (bitt < parseFloat(styleIBU[0]))
-    {
-        msg += "<br>Bitterness is below style guide of " + styleIBU[0];
-        var hops = document.getElementById("hopsbutton");
-        hops.style = "border: 1px solid #900; background-color:lightyellow;";
-    }
-    else if (bitt > parseFloat(styleIBU[1]))
-    {
-        msg += "<br>Bitterness is above style guide of " + styleIBU[1];
-    }
-
-    if (colr < parseFloat(styleSRM[0]))
-    {
-        msg += "<br>Beer color is below style guide of " + styleSRM[0];
-    }
-    else if (colr > parseFloat(styleSRM[1]))
-    {
-        msg += "<br>Beer color is above style guide of " + styleSRM[1];
-    }
-
-    // check for too much of an ingredient
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var inp = cells[1].getElementsByTagName('input');
-	var what = cells[2].textContent;
-	var list = getIngredientList(what);
-        var sel = cells[3].getElementsByTagName('select');
-        var weight = getIngredientWeight(what,frm,inp);
-	var maxPercent = list[sel.item(0).selectedIndex].RecipeSuggestedMax/100;
-	if (weight/weightIngredients > maxPercent)
-	{
-	    msg += "<br>Warning: High amount of ";
-	    msg += list[sel.item(0).selectedIndex].name;
-	}
-    }
-
-    var e = document.getElementById("messagebox");
-
-    if (msg.length > 0)
-    {
-        e.style.color = "red";
-        e.innerHTML = msg;
-    }
-    else
-    {
-        e.style.color = "green";
-        e.innerHTML = "Recipe complete. Go to Brewing Plan";
-    }
-
-    if (rs.length == 1)
-        return;
-
-    // create brewing plan
-    var plan = document.getElementById("plancontent");
-    var planContent = "";
-
-    var grainWeight = 0.0;
-    // get grain weight
-
-    if (frm.recipename.value == '')
-    {
-        planContent = "<h1>[Missing Recipe Name]</h1>";
-    }
-    else
-    {
-        planContent = "<h1>NAME: " + frm.recipename.value +"</h1>";
-    }
-
-    planContent += "<p>&nbsp;</p><hr />";
-    planContent += "<h2>Description:</h2><p>";
-    planContent += "<table><tr><td>";
-
-    planContent += "<strong>Style: </strong>" + Data.Styles[sty].name + "<br /> ";
-    planContent += "<strong>Estimated OG: </strong>" + grav + "<br /> ";
-    planContent += "<strong>Estimated ABV%: </strong>" + alco + "%<br /> ";
-    planContent += "<strong>Estimated Color: </strong>" + colr +  " SRM";
-    planContent += '&nbsp;<span style="background-color:' + SRMcolor(colr);
-    planContent += '">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />';
-    planContent += "<strong>Estimated Bitterness: </strong>" + bitt + " IBU";
-
-    planContent += "</td><td>";
-
-    planContent += "<strong>Batch Size: </strong>";
-    planContent += document.getElementById("batchsize").value;
-    if (frm.cu.value == 'metric') {
-        planContent += " l.<br />";
-    } else {
-        planContent += " gal.<br />";
-    }
-    planContent += "<strong>Brewing Process:</strong>";
-    if (needsMash == true) {
-        planContent += " Mash<br /> ";
-    } else {
-        planContent += " No Mash<br /> ";
-    }
-    planContent += "<strong>Brewing Efficiency:</strong> ";
-    planContent += frm.eff.value + "%<br /> ";
-    planContent += "</td></tr></table>  <hr />";
-
-    planContent += FormatIngredients(frm);
-
-    planContent += "<h2>Directions:</h2>";
-    planContent += FormatDirectionsSetup();
-    if (needsMash == true) {
-        planContent += FormatDirectionsMash(frm);
-    } else if (hasSteepable == true){
-        planContent += FormatDirectionsSteep(frm);
-    }
-    planContent += FormatDirectionsBoil(needsMash);
-    planContent += FormatDirectionsFinish();
-
-    plan.innerHTML = planContent;
-}
-
-function FormatIngredients(frm)
-{
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-    var str = "";
-
-    var hasWaterTreatment = false;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if (what == 'Water Treatment')
-        {
-            hasWaterTreatment = true;
-        }
-    }
-    if (hasWaterTreatment == true)
-    {
-	// list water treatment(s)
-	str += '<h2>Water Treatment</h2>';
-
-	str += '<table class="planTable"> <tr>';
-	str += "<th>Amount</th>";
-	str += "<th>Type/variety</th>";
-	str += "<th>Value</th>";
-	str += "</tr>";
-
-	for (var i=1; i<rs.length; i++)
-	{
-	    var cells = rs[i].getElementsByTagName('td');
-	    var what = cells[2].textContent;
-
-	    if (what == 'Water Treatment')
-	    {
-		var list = Data.WaterTreatment;
-		var inp = cells[1].getElementsByTagName('input');
-		var sel = cells[3].getElementsByTagName('select');
-
-		str += "<tr><td>";
-		if (inp[0].value > 0)
-		{
-		   str += parseFloat(inp[0].value);
-		   str += " " + unitsWeightSmall(frm.cu.value);
-		}
-		str += "</td><td>";
-		str +=  list[sel.item(0).selectedIndex].name;
-		str += "</td></tr>";
-	    }
-	}
-        str += '</table>';
-    }
-
-    // list malts
-    str += '<h2>Malts/Extracts/Sugars:</h2>';
-
-    str += '<table class="planTable"> <tr>';
-    str += "<th>Amount</th>";
-    str += "<th>Type/variety</th>";
-    str += "<th>Value</th>";
-    str += "</tr>";
-
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if ( (what == 'Malt')
-	   || (what == 'Extract')
-	   || (what == 'Sugar')
-	   || (what == 'Cara/Crystal Malt')
-	   || (what == 'Roasted Malt')
-	   || (what == 'Specialty Malt')
-	   || (what == 'Unmalted Grain') )
-	{
-            var list = getIngredientList(what);
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-
-	    str += "<tr><td>";
-
-	    if ( (what == 'Malt')
-	       || (what == 'Extract')
-	       || (what == 'Cara/Crystal Malt')
-	       || (what == 'Sugar')
-	       || (what == 'Unmalted Grain') )
-            {
-		if (inp[0].value > 0)
-		{
-		   str += parseFloat(inp[0].value);
-		   str += " " + unitsWeightBig(frm.cu.value);
-		}
-		if (inp[1].value > 0)
-		{
-		   str += parseFloat(inp[1].value);
-		   str += " " + unitsWeightSmall(frm.cu.value);
-		}
-            }
-	    else
-            {
-		if (inp[0].value > 0)
-		{
-		   str += parseFloat(inp[0].value);
-		   str += " " + unitsWeightSmall(frm.cu.value);
-		}
-            }
-
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].name;
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].color + " SRM";
-	    str += "</td></tr>";
-	}
-    }
-    str += "</table>";
-
-    // list hops
-    str += '<h2>Hops:</h2>';
-
-    str += '<table class="planTable"> <tr>';
-    str += "<th>Schedule</th>";
-    str += "<th>Amount</th>";
-    str += "<th>Type/variety</th>";
-    str += "<th>Alpha Acid</th>";
-    str += "<th>Beta Acid</th>";
-    str += "<th>Aroma</th>";
-    str += "</tr>";
-
-    var hopCount = 0;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if (what == 'Hops')
-	{
-	    var list = Data.Hops;
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel1 = cells[1].getElementsByTagName('select');
-	    var sel = cells[3].getElementsByTagName('select');
-	    var sel4 = cells[4].getElementsByTagName('select');
-
-            hopCount += 1;
-	    str += "<tr><td>";
-	    str += Data.HopUtil[sel4.item(0).selectedIndex].name;
-	    str += "</td><td>";
-
-            if (inp[0].value > 0)
-            {
-	       str += parseFloat(inp[0].value);
-	       str += " " + unitsWeightSmall(frm.cu.value) + " ";
-	    }
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].name;
-	    str +=  " (" + sel1.item(0).value + ")";
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].AlphaAcid + "%";
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].BetaAcid + "%";
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].aroma;
-	    str += "</td></tr>";
-        }
-    }
-    str += "</table>";
-    if (hopCount == 0)
-    {
-        str += "No hops";
-    }
-
-    // list other additions
-    var hasMisc = false;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if (what == 'Misc')
-	{
-            hasMisc = true;
-        }
-    }
-    if (hasMisc == true)
-    {
-        str += '<h2>Others:</h2>';
-
-	str += '<table class="planTable"> <tr>';
-	str += "<th>Amount</th>";
-	str += "<th>Ingredient</th>";
-	str += "<th>Type/variety</th>";
-	str += "<th>Value</th>";
-	str += "</tr>";
-
-	for (var i=1; i<rs.length; i++)
-	{
-	    var cells = rs[i].getElementsByTagName('td');
-	    var what = cells[2].textContent;
-
-	    if (what == 'Misc')
-	    {
-		var list = getIngredientList(what);
-		var inp = cells[1].getElementsByTagName('input');
-		var sel = cells[3].getElementsByTagName('select');
-
-		str += "<tr><td>";
-
-		if (inp[0].value > 0)
-		{
-		   str += parseFloat(inp[0].value);
-		   str += " " + unitsWeightSmall(frm.cu.value);
-		}
-
-		str += "</td><td>" + what + "</td><td>";
-		str +=  list[sel.item(0).selectedIndex].name;
-		str += "</td><td>";
-		str +=  list[sel.item(0).selectedIndex].color + " SRM";
-		str += "</td></tr>";
-	    }
-	}
-    }
-    str += "</table>";
-
-    // list yeast(s)
-    str += '<h2>Yeast:</h2>';
-
-    str += '<table class="planTable"> <tr>';
-    str += "<th>Yeast name</th>";
-    str += "<th>Form</th>";
-    str += "<th>Attenuation</th>";
-    str += "<th>Temp. Range</th>";
-    str += "</tr>";
-
-    var yeastCount = 0;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-
-	if (what == 'Yeast')
-	{
-	    var list = Data.Yeasts;
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-
-            yeastCount += 1;
-	    str += "<tr><td>";
-	    str +=  list[sel.item(0).selectedIndex].name;
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].form;
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].attenuation + "%";
-	    str += "</td><td>";
-	    str +=  list[sel.item(0).selectedIndex].tempRange;
-	    str += "</td></tr>";
-        }
-    }
-    str += "</table>";
-    if (hopCount == 0)
-    {
-        str += "No yeast";
-    }
-
-    return str;
-}
-
-function FormatDirectionsSetup()
-{
-    var str = "<h4>Setup</h4> <ol>";
-
-    str += "<li> Prepare yeast starter (if applicable).</li>";
-    str += "<li> Double check all ingredients are on hand for recipe.</li>";
-    str += "<li> Begin heating water.</li>";
-    str += "<li> Add brewing salts, if desired.</li>";
-
-    str += "</ol>";
-
-    return str;
-}
-
-function FormatDirectionsMash(frm)
-{
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-
-    // get weight of everything that will appear in mash
-    var mashWeight = 0.0;
-    var hasMalt = false;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var inp = cells[1].getElementsByTagName('input');
-	var what = cells[2].textContent;
-
-	if (what == 'Malt')
-	{
-	    var sel4 = cells[4].getElementsByTagName('select');
-	    if (sel4.item(0).value == "mash")
-                hasMalt = true;
-                mashWeight += getIngredientWeight(what,frm,inp);
-        }
-    }
-
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var inp = cells[1].getElementsByTagName('input');
-	var what = cells[2].textContent;
-
-	if (  (what == 'Cara/Crystal Malt')
-	   || (what == 'Roasted Malt')
-	   || (what == 'Specialty Malt')
-	   || (what == 'Unmalted Grain') )
-	{
-	    var sel4 = cells[4].getElementsByTagName('select');
-	    if (hasMalt == true)
-                mashWeight += getIngredientWeight(what,frm,inp);
-        }
-    }
-
-    var batchsize = parseFloat(document.getElementById("batchsize").value);
-    // mash thickness = 1.5qt per lb / 2.5 / 3.5 -- thick/medium/light
-    var mashWaterThick = (mashWeight * 1.5) / 4;
-    var mashWaterMed =  (mashWeight * 2.2) / 4;
-    var boilEvaporation = (.12 * batchsize)
-    // water absorbed by grain = .125 per pound
-    var lossTrub = .125 * mashWeight;
-    // "kettle loss" = 8%
-    var lossEquipment = Math.max( (batchsize * .08), .4)
-    var spargeWater =  (batchsize - mashWaterThick) + boilEvaporation + lossTrub + lossEquipment;
-
-    var str = "<h4>Mash</h4>";
-
-    str += 'Note: This assumes a simple mash.  Adjust as desired.<br>';
-    str += '<table border="1" cellpadding="5">';
-    str += "<tr><td>Amount to mash</td>";
-    str += "<td>" + mashWeight.toFixed(1) + " lb.</td></tr>";
-    str += "<tr><td>Mash water needed (thick)</td>";
-    str += "<td>" + mashWaterThick.toFixed(1) + " gal.</td></tr>";
-    str += "<tr><td>Mash water needed (medium)</td>";
-    str += "<td>" + mashWaterMed.toFixed(1) + " gal.</td></tr>";
-    str += "<tr><td>Sparge water needed<br>for a " + batchsize + " gal. batch</td>";
-    str += "<td>" + spargeWater.toFixed(1) + " gal.</td></tr>";
-    str += "</table> <ol>";
-
-    str += "<li>Weigh out and mill grains.</li>";
-    str += "<li>Heat mash water to chosen strike temperature.</li>";
-    str += "<li>When strike is reached, add grains to be mashed.</li>";
-    str += "<li>Monitor mash temperature during mash and adjust as necessary.</li>";
-
-    str += "</ol>";
-
-    str += "<h4>Sparge/Lauter</h4> <ol>";
-
-    str += "<li>Heat water for sparging to 170&deg;F.</li>";
-    str += "<li>Draw off first few quarts of cloudy mash liquid and pour back into mash tun to clarify (vorlauf).</le>";
-    str += "<li>After runnings turn clear, add them to the boil kettle.</le>";
-    str += "<li>If using batch sparging, add sparge water to mash, wait a few minutes, then drain to kettle.</le>";
-    str += "<li>If using continuous/fly sparging, slowly add sparge water to mash, while draining wort.</le>";
-    str += "</ol>";
-
-    return str;
-}
-
-function FormatDirectionsSteep(frm)
-{
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-
-    // get weight of everything that will appear in mash
-    var steepWeight = 0.0;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var inp = cells[1].getElementsByTagName('input');
-	var what = cells[2].textContent;
-
-	if ( (what == 'Cara/Crystal Malt')
-	   || (what == 'Roasted Malt')
-	   || (what == 'Specialty Malt') )
-	{
-	    var sel4 = cells[4].getElementsByTagName('select');
-            steepWeight += getIngredientWeight(what,frm,inp);
-        }
-    }
-
-    if (steepWeight == 0.0)
-        return "";
-
-    var str = "<h4>Steep</h4> <ol>";
-
-    str += "<li>Bring steeping water to ";
-    if (frm.cu.value == 'us') {
-        str += "155&deg;F.</li> ";
-    } else if (frm.cu.value == 'metric') {
-        str += "70&deg;C.</li> ";
-    }
-    str += "<li>Steep cara/crystal/roasted/spec malt for 30-60 minutes.</li> ";
-    str += "<li>Remove the spent grains.</li> ";
-
-    str += "</ol>";
-
-    return str;
-}
-
-function FormatDirectionsBoil(needsMash)
-{
-    var tbl = document.getElementById("tableRecipe");
-    var rs = tbl.getElementsByTagName('tr');
-
-    // get weight of everything that will appear in mash
-    var hasExtract = false;
-    var hasSugar = false;
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var inp = cells[1].getElementsByTagName('input');
-	var what = cells[2].textContent;
-
-	if (what == 'Extract')
-            hasExtract = true;
-	else if (what == 'Sugar')
-            hasSugar = true;
-    }
-
-    var str = "<h4>Boil</h4> <ol>";
-
-    if (needsMash) {
-        str += "<li>Add the sparged wort the kettle and start heat.</li>";
-    } else {
-        str += "<li>Heat the water.</li>";
-    }
-
-    if (hasExtract) {
-        str += "<li>Add extract(s). Stir to avoid scorching.</li>";
-    }
-    if (hasSugar) {
-        str += "<li>Add sugar(s). Stir to avoid scorching.</li>";
-    }
-
-    str += "<li>Stir well to avoid boil over. Start timer when boil starts.</li>";
-    str += "<li>Add hops according to schedule.</li> ";
-
-    str += "</ol>";
-
-    return str;
-}
-
-function FormatDirectionsFinish()
-{
-    var str = "<h4>Finish</h4> <ol>";
-
-    str += "<li>Cool wort to ~75&deg;F / 25&deg;C.</li>";
-    str += "<li>Transfer wort to fermentation container.</li> ";
-    str += "<li>Take original gravity reading.</le>";
-    str += "<li>Pitch yeast to wort.</li>";
-    str += "<li>Store fermentation container in cool, dark place.</li>";
-
-    str += "</ol>";
-
-    return str;
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function unitsWeightSmall(sys)
-{
-    if (sys == 'us') {
-	return "oz.";
-    } else if (sys == 'metric') {
-	return "gm.";
-    } else {
-        alert("Error: bad measurement system " + sys);
-        return "??";
-    }
-}
-
-function unitsWeightBig(sys)
-{
-    if (sys == 'us') {
-	return "lb.";
-    } else if (sys == 'metric') {
-	return "kg.";
-    } else {
-        alert("Error: bad measurement system " + sys);
-        return "??";
-    }
-}
-
-function unitsFluid(sys)
-{
-    if (sys == 'us') {
-	return "gal.";
-    } else if (sys == 'metric') {
-	return "liter";
-    } else {
-        alert("Error: bad measurement system " + sys);
-        return "??";
-    }
-}
-
-function addRow(what)
-{
-    var tbl = document.getElementById("tableRecipe");
-    var lastRow = tbl.rows.length;
-    var row = tbl.insertRow(lastRow);
-
-    var cell0 = row.insertCell(0);
-    //var inp0 = document.createElement("img");
-    //inp0.setAttribute("src","delete.gif");
-    //inp0.setAttribute("alt", "DEL");
-    var inp0 = document.createElement("div");
-    // &#8855; circled times, aka vector product
-    inp0.innerHTML = '&otimes;';
-    inp0.style.cursor = 'pointer';
-    var f = "deleteRow(this.parentNode.parentNode.rowIndex)";
-    inp0.setAttribute("onclick", f);
-    cell0.appendChild(inp0);
-
-    var frm = document.getElementById("RecipeForm");
-    var cell1 = row.insertCell(1);
-    if (what == 'Yeast')
-    {
-	var inp1 = document.createElement('select');
-
-	var opt = document.createElement("option");
-	opt.text = "Package";
-	opt.value = "package";
-	inp1.appendChild(opt);
-
-	var opt2 = document.createElement("option");
-	opt2.text = "Starter";
-	opt2.value = "starter";
-	inp1.appendChild(opt2);
-
-        cell1.appendChild(inp1);
-    }
-    else if ( (what == 'Malt')
-           || (what == 'Extract')
-	   || (what == 'Cara/Crystal Malt')
-	   || (what == 'Unmalted Grain')
-           || (what == 'Sugar') )
-    {
-        var inp1 = document.createElement("input");
-        inp1.setAttribute("type","text");
-        inp1.setAttribute("size", "2");
-        inp1.setAttribute("value", "0");
-        inp1.setAttribute("onchange","calcRecipe();");
-        cell1.appendChild(inp1);
-        var unit = unitsWeightBig(frm.cu.value);
-        var txt1 = document.createTextNode(unit);
-        cell1.appendChild(txt1);
-
-        var inp2 = document.createElement("input");
-        inp2.setAttribute("type","text");
-        inp2.setAttribute("size", "2");
-        inp2.setAttribute("value", "0");
-        inp2.setAttribute("onchange","calcRecipe();");
-        cell1.appendChild(inp2);
-        var unit2 = unitsWeightSmall(frm.cu.value);
-        var txt2 = document.createTextNode(unit2);
-        cell1.appendChild(txt2);
-    }
-    else if (what == 'Hops')
-    {
-        var inp1 = document.createElement("input");
-        inp1.setAttribute("type","text");
-        inp1.setAttribute("size", "2");
-        inp1.setAttribute("value", "0");
-        inp1.setAttribute("onchange","calcRecipe();");
-        cell1.appendChild(inp1);
-        var unit = unitsWeightSmall(frm.cu.value);
-        var txt = document.createTextNode(unit);
-        cell1.appendChild(txt);
-
-	var hops = document.createElement('select');
-        hops.setAttribute("onchange","calcRecipe();");
-
-	var opt = document.createElement("option");
-	opt.text = "Whole";
-	opt.value = "whole";
-	hops.appendChild(opt);
-
-	var opt2 = document.createElement("option");
-	opt2.text = "Pellets";
-	opt2.value = "pellets";
-	hops.appendChild(opt2);
-
-	var opt3 = document.createElement("option");
-	opt3.text = "Plugs";
-	opt3.value = "plugs";
-	hops.appendChild(opt3);
-
-	var opt4 = document.createElement("option");
-	opt4.text = "Extract";
-	opt4.value = "extract";
-	hops.appendChild(opt4);
-
-        cell1.appendChild(hops);
-    }
-    else if ( (what == 'Roasted Malt')
-	   || (what == 'Specialty Malt')
-           || (what == 'Water Treatment')
-           || (what == 'Misc') )
-    {
-        var inp1 = document.createElement("input");
-        inp1.setAttribute("type","text");
-        inp1.setAttribute("size", "2");
-        inp1.setAttribute("value", "0");
-        inp1.setAttribute("onchange","calcRecipe();");
-        cell1.appendChild(inp1);
-        var unit = unitsWeightSmall(frm.cu.value);
-        var txt = document.createTextNode(unit);
-        cell1.appendChild(txt);
-    }
-
-    var cell2 = row.insertCell(2);
-    var inp2 = document.createTextNode(what);
-    cell2.appendChild(inp2);
-
-    var cell3 = row.insertCell(3);
-    var list = getIngredientList(what);
-    var inp3 = document.createElement('select');
-    inp3.setAttribute("onchange", "calcRecipe();");
-    for (i=0, j=list.length; i<j; i++)
-    {
-	x = list[i].name;
-	var opt = document.createElement("option");
-	opt.text = x;
-	opt.value = x;
-	inp3.appendChild(opt);
-    }
-    cell3.setAttribute("align","center");
-    cell3.appendChild(inp3);
-
-    var tt = document.createElement('a');
-    tt.setAttribute("class", "tooltip");
-    tt.onmouseover = new Function("tooltipOn(this);");
-    tt.innerHTML = " ?";
-
-    var dd = document.createElement('span');
-    dd.setAttribute("id","tooltip" + row.rowIndex);
-    dd.innerHTML = "info";
-
-    tt.appendChild(dd);
-    cell3.appendChild(tt);
-
-    var cell4 = row.insertCell(4);
-    var element4;
-    if (what == 'Hops')
-    {
-        list = Data.HopUtil;
-	element4 = document.createElement('select');
-	element4.setAttribute("onchange", "calcRecipe();");
-	for (i=0, j=list.length; i<j; i++)
-	{
-	    var opt = document.createElement("option");
-	    opt.text = list[i].name;
-	    opt.value = list[i].time;
-	    element4.appendChild(opt);
-        }
-    }
-    else if (what == 'Malt')
-    {
-	element4 = document.createElement('select');
-	element4.setAttribute("onchange", "calcRecipe();");
-
-	var opt = document.createElement("option");
-	opt.text = "Mash";
-	opt.value = "mash";
-	element4.appendChild(opt);
-
-	var opt2 = document.createElement("option");
-	opt2.text = "Steep";
-	opt2.value = "steep";
-	element4.appendChild(opt2);
-    }
-    else
-    {
-        // placeholder
-	element4 = document.createTextNode("");
-    }
-    cell4.appendChild(element4);
-    calcRecipe();
-}
-
-function deleteRow(rownum)
-{
-    var tbl = document.getElementById("tableRecipe");
-    //alert(rownum);
-    tbl.deleteRow(rownum);
-    calcRecipe();
-}
-</script>
-
-<script language="Javascript" type="text/javascript">
-function calcRecipe()
-{
-    var frm = document.getElementById("RecipeForm");
-    var tbl = document.getElementById("tableRecipe");
-
-    var rs = tbl.getElementsByTagName('tr');
-
-    var gravTotal = 0.0
-    var bittTotal = 0.0;
-    var colrTotal = 0.0;
-    var aaTotal = 0.0;
-    var atten = 0.0;
-
-    for (var i=1; i<rs.length; i++)
-    {
-	var cells = rs[i].getElementsByTagName('td');
-	var what = cells[2].textContent;
-	if (what == 'Yeast')
-	{
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-
-	    atten = Data.Yeasts[sel.item(0).selectedIndex].attenuation;
-	}
-	else if (what == 'Hops')
-	{
-	    var sel1 = cells[1].getElementsByTagName('select');
-            var yield = 0.0;
-	    if (sel1.item(0).value == "whole")
-            {
-                yield = .95;
-            }
-	    else if (sel1.item(0).value == "pellets")
-            {
-                yield = 1.03;
-            }
-	    else if (sel1.item(0).value == "plugs")
-            {
-                yield = 1.0;
-            }
-	    else if (sel1.item(0).value == "extract")
-            {
-                yield = 3.0;
-            }
-
-	    var inp = cells[1].getElementsByTagName('input');
-
-            // Garetz formula is often low, not used here
-	    //Boil Time (min) %Util
-	    //----------------------------------------
-	    // 0 -  5           0
-	    // 6 - 10           0
-	    //11 - 15           2
-	    //16 - 20           5
-	    //21 - 25           8
-	    //26 - 30          11
-	    //31 - 35          14
-	    //36 - 40          16
-	    //41 - 45          18
-	    //46 - 50          19
-	    //51 - 60          20
-	    //61 - 70          21
-	    //71 - 80          22
-	    //81 - 90          23
-
-	    //Tinseth formula
-	    //Util = (1.65*0.000125^(OG-1))*((1-2.72^(-0.04*Boil Time))/4.15)
-	    //IBU = Util *(oz*(AA% / 100)* 7490) / Volume of Batch in Gallons
-            // see http://realbeer.com/hops/research.html
-
-	    //Rager formula
-	    // IBU = (W * U * AA% * 7489)/(volume * gravity)
-	    // where W equals weight (oz.) of the hops, 
-	    // AA% is the alpha acid rating of the hops in percentage, 
-	    // U is the utilization factor as a function of boil time
-	    //Boil Time(min) %Utilization
-	    //-----------------------------------
-	    // 0 -  5         5.0
-	    // 6 - 10         6.0
-	    //11 - 15         8.0
-	    //16 - 20        10.1
-	    //21 - 25        12.1
-	    //26 - 30        15.3
-	    //31 - 35        18.8
-	    //36 - 40        22.8
-	    //41 - 45        26.9
-
-	    //Ray Daniels's chart ("Designing Great Beers", 1996)
-	    // Boil Time(min) whole pellet
-	    // dry hop          0     0
-	    // 0 - 9            5     6
-	    // 10 - 19          12   15
-	    // 20 - 29          15   19
-	    // 30 - 44          19   24
-	    // 45 - 59          22   27
-	    // 60 - 74          24   30
-	    // 75 +             27   34
-
-            // BTW, one person found curve fit of chart:
-            // whole U = -(.0041 * Time^2) + (0.6261 * Time) + 1.5779
-            // pellet U = -(.0051 * Time^2) + (0.7835 * Time) + 1.9348
-
-            // use Daniels utilization chart (encoded in Data.HopUtil)
-
-	    var sel3 = cells[3].getElementsByTagName('select');
-            var hopAA = Data.Hops[sel3.item(0).selectedIndex].AlphaAcid;
-	    var sel4 = cells[4].getElementsByTagName('select');
-	    var util = Data.HopUtil[sel4.item(0).selectedIndex].util / 100;
-
-	    var weight = parseFloat(inp[0].value) * yield;
-	    var thisAA = 0.0;
-            if (frm.cu.value == 'us') {
-	        thisAA = hopAA * weight * util * 74.9;
-	    } else if (frm.cu.value == 'metric') {
-	        thisAA = hopAA * weight * util * 2.65;
-	    }
-
-	    aaTotal += thisAA;
-	}
-	else if (what == 'Malt')
-	{
-            var list = getIngredientList(what);
-
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-	    var sel4 = cells[4].getElementsByTagName('select');
-            var yield = 0.0;
-	    if (sel4.item(0).value == "mash")
-            {
-                yield = list[sel.item(0).selectedIndex].ExtractMashYield/100;
-            }
-	    else if (sel4.item(0).value == "steep")
-            {
-                yield = list[sel.item(0).selectedIndex].ExtractSteepYield/100;
-            }
-
-            var weight = getIngredientWeight(what,frm,inp);
-	    gravTotal += weight * yield
-		       * list[sel.item(0).selectedIndex].ExtractPotential;
-
-            colrTotal += weight * list[sel.item(0).selectedIndex].color;
-	}
-	else if ( (what == 'Extract')
-	       || (what == 'Sugar') )
-	{
-            var list = getIngredientList(what);
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-
-            var weight = getIngredientWeight(what,frm,inp);
-	    gravTotal += weight
-		       * list[sel.item(0).selectedIndex].ExtractPotential
-		       * list[sel.item(0).selectedIndex].ExtractYield/100;
-
-            colrTotal += weight * list[sel.item(0).selectedIndex].color;
-	}
-	else if ( (what == 'Cara/Crystal Malt')
-	       || (what == 'Roasted Malt')
-	       || (what == 'Specialty Malt')
-	       || (what == 'Unmalted Grain') )
-	{
-            var list = getIngredientList(what);
-	    var inp = cells[1].getElementsByTagName('input');
-	    var sel = cells[3].getElementsByTagName('select');
-            var yield = list[sel.item(0).selectedIndex].ExtractYield/100;
-            var weight = getIngredientWeight(what,frm,inp);
-	    gravTotal += weight * yield
-		       * list[sel.item(0).selectedIndex].ExtractPotential;
-
-            colrTotal += weight * list[sel.item(0).selectedIndex].color;
-	}
-	else if (what == 'Water Treatment')
-	{
-	    var list = Data.WaterTreatment;
-	}
-	else if (what == 'Misc')
-	{
-	    var list = Data.Misc;
-	}
-    }
-
-    var batchsize = parseFloat(document.getElementById("batchsize").value);
-    if (frm.cu.value == 'metric') {
-        batchsize = batchsize / 3.785;  // liter -> gallon
-    }
-
-    // built-in values assume 75% efficiency, but allow user adjustment
-    var eff = frm.eff.value;
-    gravTotal = gravTotal * (1.0 + (eff - 75)/100);
-
-    // Calculate the original gravity (OG) as the weight of the grains
-    //  times their potential extract times the extract efficiency,
-    //  all divided by the volume of the beer.
-    // OG = (W * PE * EE) / V
-    if (gravTotal > 0.0 && batchsize > 0.0)
-    {
-	var grav = document.getElementById("calcGravityValue");
-        // fudge factor for typical homebrew sizes (untested SWAG)
-        var fudge = 1.0 - 1.1/(batchsize*batchsize);
-        var num = 1.0 + (fudge * gravTotal) / (batchsize * 1000);
-	grav.innerHTML = num.toFixed(3);
-    }
-
-    // Calculate bitterness (IBU)
-    // AA (mg/l) = hop AA * ozs of hop * 7490 / gallons of wort
-
-    var bitt = document.getElementById("calcBitternessValue");
-    if (aaTotal > 0.0 && gravTotal > 0.0 && batchsize > 0.0)
-    {
-        // IBU = (W * U * AA * 7489) / volume * (1+(G-1.050)/.2)
-        // adjust for heavier worts (OG 1.050)
-        var gravCorrection = 1.0;
-        if (gravTotal/batchsize > 50)
-        {
-            var gravDiff = (gravTotal/batchsize - 50) /1000.0; 
-            gravCorrection = 1.0 + (gravDiff / .2);
-        }
-        var num = aaTotal / (batchsize * gravCorrection);
-	bitt.innerHTML = num.toFixed(0);
-    }
-    else
-    {
-	bitt.innerHTML = "0";
-    }
-
-    // Calculate beer color (SRM)
-    // SRM = 1.49 * MCU^0.69 (Dan Morey curve for beers up to 50SRM)
-    // SRM = (MCU x 0.3) + 4.7 (Randy Mosher)
-    // SRM = (MCU * 0.2) + 8.4 (Ray Daniels)
-    // where MCU (malt color units) is the weight of the ingredient in pounds
-    // times its color rating divided by volume (in gallons).
-    if (colrTotal > 0.0 && batchsize > 0.0)
-    {
-        var mcu = colrTotal / batchsize;
-        var srm = 1.4922 * Math.pow(mcu, .6859);
-        var colr = document.getElementById("calcColorValue");
-        colr.innerHTML = srm.toFixed(0);
-    }
-
-    // Calculate alcohol (ABV) 
-    // ABV = (OG - FG) * 0.129
-    if (atten > 0.0 && gravTotal > 0.0 && batchsize > 0.0)
-    {
-        var alco = document.getElementById("calcAlcoholValue");
-        var num = atten/100 * gravTotal/batchsize * 0.129;
-        alco.innerHTML = num.toFixed(1);
-    }
-
-    makePlan();
-}
-
-function UnitsChange()
-{
-    var frm = document.getElementById("RecipeForm");
-    var tag = document.getElementById("batchSizeUnitTag");
-    tag.innerHTML = unitsFluid(frm.cu.value);
-    calcRecipe();
-}
-
-function StyleChange()
-{
-    var sel = document.getElementById("bjcpstyle");
-    //alert("StyleChange " + sel.selectedIndex);
-    var style = Data.Styles[sel.selectedIndex];
-
-    var grav = document.getElementById("styleGravityValue");
-    var bitt = document.getElementById("styleBitternessValue");
-    var colr = document.getElementById("styleColorValue");
-    var alco = document.getElementById("styleAlcoholValue");
-    grav.innerHTML = style.gravity;
-    bitt.innerHTML = style.bitterness;
-    colr.innerHTML = style.color;
-    alco.innerHTML = style.alcohol;
-    calcRecipe();
-}
+<script>
+  // global variable
+  var RECIPE = new Recipe();
 </script>
 
 </head>
-
 <body>
 
-<noscript>
-This web app requires JavaScript to be enabled in your browser.
-<p>
-You are seeing this because your browser isn't running JavaScript.
-This may be because it is too old, or because JavaScript is disabled.
-<p>
-<ul>
-  <li>
-    If you use Mozilla, Netscape or Firefox, check
-    <a 
-href="http://www.mozilla.org/support/firefox/options#webfeatures" 
-target="_blank">here</a>
-    here.
-  </li>
-  <li>
-    If you use Microsoft Internet Explorer, check
-    <a 
-href="http://support.microsoft.com/?scid=http%3a%2f%2fwww.support.microsoft.com%2fgp%2fnoscript%2f"
-target="_blank">here</a>
-  </li>
-</ul>
-
-</noscript>
-
-<div id="navcontainer">
-<center>
-<div class="logo">
-BrewStar<br>
-<span style="font-size:18px; text-align:none; letter-spacing:0px;">
-Homebrew Recipe Calculator
-</span>
-</div>
-</center>
-
-   <ul>
-      <li><a href="#" onclick="showTab(0);" id="tabrecipe" class="active">Recipe Calculator</a></li>
-      <li><a href="#" onclick="showTab(1);" id="tabstyles">Beer Styles</a></li>
-      <li><a href="#" onclick="showTab(2);" id="tabplan">Brewing Plan</a></li>
-   </ul>
+<div class="header">
+  <h1>BrewStar</h1>
+  Homebrew beer recipe calculator
 </div>
 
-<!-- -------------------------------- -->
-<br>&nbsp;
+<!-----------------
+<div class="navbar">
+  <a href="#" class="active">Calculator</a>
+  <a href="#">Beer Styles</a>
+  <a href="#">Links</a>
+  <a href="#" class="right">Help</a>
+</div>
+-------------->
 
-<div class="tabContent" id="divrecipe">
+<div id="content_container">
+  <div id="content_column_left">
+    <h3>Recipe Status</h3>
+      Complete all sections to unlock recipe.
+    <br/>
+    <div class="recipe-status">
+      <span id="recipeStatus_basics">&osol;</span>
+      <span id="recipeStatus_1">Basic section</span><br/>
+      <span id="recipeStatus_fermentables">&osol;</span>
+      <span id="recipeStatus_2">Malts/Fermentables section</span><br/>
+      <span id="recipeStatus_flavorings">&osol;</span>
+      <span id="recipeStatus_3">Hops/Flavorings section</span><br/>
+      <span id="recipeStatus_fermenters">&osol;</span>
+      <span id="recipeStatus_4">Yeast/Microbe section</span><br/>
+    </div>
 
-<form id="RecipeForm">
+    <button class="button-popup" id="mpopupButtonReport">Show Recipe</button>
 
-<table>
-<tr><td>
-<table class="resultTable">
-<tr>
-<th>GUIDE</th>
-<th>Original gravity</th>
-<th>Bitterness</th>
-<th>Beer color</th>
-<th>Alcohol</th>
-</tr>
-<tr>
-<td><h4>Style:</h4></td>
-<td> <span id="styleGravityValue">
-    <script language="Javascript" type="text/javascript">
-        var style = Data.Styles[0];
-        document.write(style.gravity);
-    </script>
-</span></td>
-<td> <span id="styleBitternessValue">
-    <script language="Javascript" type="text/javascript">
-        var style = Data.Styles[0];
-        document.write(style.bitterness);
-    </script>
-</span> IBU</td>
-<td> <span id="styleColorValue">
-    <script language="Javascript" type="text/javascript">
-        var style = Data.Styles[0];
-        document.write(style.color);
-    </script>
-</span> SRM</td>
-<td> <span id="styleAlcoholValue">
-    <script language="Javascript" type="text/javascript">
-        var style = Data.Styles[0];
-        document.write(style.alcohol);
-    </script>
-</span>%</td>
-</tr>
-<tr>
-<td><h4>Recipe</h4></td>
-<td> <span id="calcGravityValue">0</span></td>
-<td> <span id="calcBitternessValue">0</span> IBU</td>
-<td> <span id="calcColorValue">0</span> SRM</td>
-<td> <span id="calcAlcoholValue">0</span>%</td>
-</tr>
-</table>
-</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td>
-BJCP Beer Style
-<br>
-<select id="bjcpstyle" size="1" onchange="StyleChange();">
-    <script language="Javascript" type="text/javascript">
-    var list = Data.Styles;
-    for (i=0, j=list.length; i<j; i++)
-    {
-        document.write('<option value="' + i + '">');
-        document.write(list[i].name);
-        document.writeln('</option>');
-    }
-    </script>
-</select>
-</td>
-</tr>
-</table>
+    <h3>Recipe Style Guidelines</h3>
+    <span class="fixedfont" id="styleName">?</span>
+    <table class='table_result'>
+      <thead>
+	<tr>
+	  <th>OG</th>
+	  <th>Bitter</th>
+	  <th>Color</th>
+	  <th>Alcohol</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td> <span id="styleGravityValue">?</span></td>
+	  <td> <span id="styleBitternessValue">?</span></td>
+	  <td> <span id="styleColorValue">?</span></td>
+	  <td> <span id="styleAlcoholValue">?</span></td>
+	</tr>
+      </tbody>
+    </table>
 
+    <h3><strong>Recipe Specification</strong></h3>
+    <ul style="list-style-type: square;">
+      <li><strong>Name: </strong><span id="recipeName">?</span></li>
+      <li><strong>Date: </strong><span id="recipeDate">?</span></li>
+      <li><strong>Batch Size: </strong><span id="calcBatchSize">?</span></li>
+      <li><strong>Original Gravity: </strong><span id="calcOriginalGravity">?</span></li>
+      <!---
+      <li><strong>Final Gravity: </strong><span id="calcFinalGravity">?</span></li>
+      -->
+      <li><strong>Alcohol: </strong><span id="calcAlcohol">?</span></li>
+      <li><strong>Bitterness (IBU): </strong><span id="calcBitterness">?</span></li>
+      <li><strong>Color (SRM): </strong><span id="calcColor">?</span></li>
+    </ul>
 
-<table cellspacing="0" width="100%" class="configTable">
-<tr>
-<td colspan="3">Recipe Name:
-<input id="recipename" size="60" onchange="calcRecipe()">
-</td>
-</tr><tr>
-<td>Units:
-<select name="cu" size="1" onchange="UnitsChange();">
-  <option value="us" selected>US/Imperial</option>
-  <option value="metric">Metric</option>
-</select>
-</td>
+  </div>
+  
+  <div id="content_column_right">
+    
+    <div class="accordion">
+      <details class="section1">
+	<summary>Recipe Basic Information<span class="required-field"></span></summary>
+	<div class="grid">
+	  <article>
+            <h3>Recipe Name<span class="required-field"></span></h3>
+	    <p>
+	      Give the recipe a good name.
+	    </p>
+	    <label for="recipename">Recipe name</label>
+	    <br />
+	    <input type="text" id="recipename" value="" onChange="changeRecipeName(this)">
+	    <!-- fake button to trigger the onChange -->
+	    <button type="button" onclick="return false">Set Value</button>
+	  </article>
+	  <article>
+	    <h3>Target BJCP Beer Style<span class="required-field"></span></h3>
+	    <p>
+	      These beer styles are used for homebrew competitions.
+	    </p>
+	    <br>
+	    <select size="1" onchange="changeStyle(this);">
+	      <script language="Javascript" type="text/javascript">
+		document.write('<option selected="selected" disabled value="-1">');
+		document.write("PICK A STYLE");
+		document.writeln('</option>');
+		var list = Data.Styles;
+		for (i=0, j=list.length; i<j; i++)
+		{
+		    document.write('<option value="' + i + '">');
+		    document.write(list[i].name);
+		    document.writeln('</option>');
+		}
+		</script>
+	    </select>
+	  </article>
+	  <article>
+            <h3>Batch size<span class="required-field"></span></h3>
+	    <form onSubmit="changeBatchSize(this); return false;" novalidate="novalidate">
+	      <label for="amount">Amount:</label>
+	      <br />
+	      <!-- set the visible width, in characters, of input -->
+	      <input type="text" name="amount" size="3" value="">
+	      <select size="1" name="units">
+		<option value="gallons" selected>gallons</option>
+		<option value="liters">liters</option>
+	      </select>
+	      <br/>
+	      <input value="Set Value" type="button" onclick="changeBatchSize(this.form); return false;">
+	    </form>
+	  </article>
+	  <article>
+            <h3>Measurement units</h3>
+	    <p>
+	      Do you prefer US Customary or Metric measurements for the formatted recipe?
+	    </p>
+	    <select size="1" onchange="changeUnits(this);">
+	      <option value="us" selected>US/Imperial</option>
+	      <option value="metric">Metric</option>
+	    </select>
+	  </article>
+	  <article>
+            <h3>Efficiency</h3>
+	    <p>
+	      Brewing efficiency is the quantity of sugar in the wort divided by the
+	      potentially available amount of sugars from the ingrediants.
+	      Depending on the method and ingredients, efficiency will usually
+	      fall between 65% and 80%.
+	    </p>
+	    <input type="range" name="effRange" min="60" max="80" value="72" step="1"
+		   onInput="inputEfficiency(this);" onChange="changeEfficiency(this);">
+	    <label for="effRange"><span id="efficiency_range_value"></span></label>
+	  </article>
+	  <article>
+            <h3>Recipe Notes</h3>
+            <p>
+	      Add notes for the formatted recipe.
+	    </p>
+	    <textarea rows="4" cols="30" onchange="changeBasicsNote(this)"></textarea>
+	    <br/>
+	    <!-- fake button to trigger the onChange -->
+	    <button type="button" onclick="return false">Set Value</button>
+	  </article>
+	</div>
+  </details>
+  
+  <details class="section2">
+    <summary>Malts and adjuncts<span class="required-field"></span></summary>
+	<div class="grid">
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Malt Extract:</legend>
+		<form onSubmit="addRow_Fermentable('extract', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.Extracts;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('extract', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Malted Grain:</legend>
+		<form onSubmit="addRow_Fermentable('malt', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.Malts;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  Usage:
+		  <input type="radio" name="usage" value="mash" checked>
+		  <label for="mash"> mash</label>
+		  <input type="radio" name="usage" value="steep">
+		  <label for="steep"> steep</label>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('malt', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Roast Malt:</legend>
+		<form onSubmit="addRow_Fermentable('roastmalt', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.RoastMalts;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  Usage:
+		  <input type="radio" name="usage" value="mash" checked>
+		  <label for="mash"> mash</label>
+		  <input type="radio" name="usage" value="steep">
+		  <label for="steep"> steep</label>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('roastmalt', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Crystal / Caramel Malt:</legend>
+		<form onSubmit="addRow_Fermentable('caramalt', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.CaraMalts;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  Usage:
+		  <input type="radio" name="usage" value="mash" checked>
+		  <label for="mash"> mash</label>
+		  <input type="radio" name="usage" value="steep">
+		  <label for="steep"> steep</label>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('caramalt', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Specialty Malt:</legend>
+		<form onSubmit="addRow_Fermentable('specmalt', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.SpecMalts;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  Usage:
+		  <input type="radio" name="usage" value="mash" checked>
+		  <label for="mash"> mash</label>
+		  <input type="radio" name="usage" value="steep">
+		  <label for="steep"> steep</label>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('specmalt', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Sugars:</legend>
+		<form onSubmit="addRow_Fermentable('sugar', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.Sugars;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('sugar', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	  <article>
+	    <fieldset class="fieldset_fermentable">
+		<legend>Add Unmalted Grains:</legend>
+		<form onSubmit="addRow_Fermentable('unmalted', this); return false;" novalidate="novalidate">
+		  <select size="1" name="maltnum">
+		    <script language="Javascript" type="text/javascript">
+		      var list = Data.UnmaltedGrains;
+		      for (var i=0, j=list.length; i<j; i++) {
+			  document.write('<option value="' + i + '">');
+			  document.write(list[i].name);
+			  document.writeln('</option>');
+		      }
+		      </script>
+		  </select>
+		  <p></p>
+		  Amt:
+		  <input type="text" name="amount" size="3" value="">
+		  <select size="1" name="units">
+		    <option value="ounces">ounces</option>
+		    <option value="grams">grams</option>
+		    <option value="kilograms">kilograms</option>
+		    <option value="pounds" selected>pounds</option>
+		  </select>
+		  <p></p>
+		  <input value="Add" type="button" onclick="addRow_Fermentable('unmalted', this.form)">
+		</form>
+	      </fieldset>
+	  </article>
+	</div>
+	<table class="fermentables">
+	  <thead>
+	    <tr>
+	      <th>Delete</th>
+	      <th>Usage</th>
+	      <th>Amount</th>
+	      <th>Grain/Fermentable</th>
+	    </tr>
+	  </thead>
+	  <tbody id="tableFermentables">
+	    <script language="Javascript" type="text/javascript">
+	      var list = RECIPE.fermentables;
+	      for (var i=0, j=list.length; i<j; i++) {
+		  if (list.type != "malt") continue;
+		  document.write('<tr>');
+		  document.write('<td>X</td>');
+		  document.write('<td>');
+		  document.write(list[i].usage);
+		  document.write('</td><td>');
+		  document.write(list[i].amount + ' ' + list[i].units);
+		  document.write('</td><td>');
+		  document.write(Data.Malts[list[i].maltnum]);
+		  document.write('</td>');
+		  document.writeln('</tr>');
+	      }
+	      </script>
+	  </tbody>
+        </table>
+  </details>
+  
+  <details class="section3">
+    <summary>Hops / Spices / Flavorings</summary>
+    <div style="display:flex; flex-wrap:wrap; margin-top:12px;">
+      <div>
+	<fieldset class="fieldset_flavoring">
+	  <legend>Add Hop:</legend>
+	  <form onSubmit="addRow_Flavoring('hop', this); return false;" novalidate="novalidate">
+	    <select size="1" name="num">
+	      <script language="Javascript" type="text/javascript">
+		var list = Data.Hops;
+		for (var i=0, j=list.length; i<j; i++) {
+		    document.write('<option value="' + i + '">');
+		    document.write(list[i].name);
+		    document.writeln('</option>');
+		}
+		</script>
+	    </select>
+	    <br/>
+	    <select size="1" name="format">
+	      <option value="whole">Whole</option>
+	      <option value="pellets">Pellets</option>
+	      <option value="plugs">Plugs</option>
+	      <option value="extract">Extract</option>
+	    </select>
+	    <p></p>
+	    Amt:
+	    <input type="text" name="amount" size="3" value="">
+	    <select size="1" name="units">
+	      <option value="ounces">ounces</option>
+	      <option value="grams">grams</option>
+	    </select>
+	    <br/>
+	    Add:
+	    <select size="1" name="when">
+	      <option value="fwh">First wort hopping</option>
+	      <option value="fullboil">One hour boil</option>
+	      <option value="halfboil">Half hour boil</option>
+	      <option value="aroma">Aroma (15 min boil)</option>
+	      <option value="hopback">Hopback (no boil)</option>
+	      <option value="dryhophrausen">Dry hop (krausen)</option>
+	      <option value="drophopsecondary">Dry hop (secondary)</option>
+	    </select>
+	    <p></p>
+	    <input value="Add" type="button" onclick="addRow_Flavoring('hop', this.form)">
+	  </form>
+	</fieldset>
+      </div>
 
-<td>Batch Size:
-<input id="batchsize" value="5" size="3" onchange="calcRecipe()">
-<span id="batchSizeUnitTag">gal.</span>
-</td>
+      <div>
+	    <fieldset class="fieldset_flavoring">
+	      <legend>Add Spice:</legend>
+	      <form onSubmit="addRow_Flavoring('spice', this); return false;" novalidate="novalidate">
+		<label for="spicename">Name:</label>
+		<input type="text" id="spicename" value="">
+		<!-- fake button to trigger the onChange -->
+		<p></p>
+		Amt:
+		<input type="text" name="amount" size="3" value="">
+		<select size="1" name="units">
+		  <option value="ounces">ounces</option>
+		  <option value="grams">grams</option>
+		</select>
+		<br/>
+		Add:
+		<select size="1" name="when">
+		  <option value="boil">Boil</option>
+		  <option value="secondary">Secondary</option>
+		  <option value="bottling">Bottling</option>
+		</select>
+		<p></p>
+		<input value="Add" type="button" onclick="addRow_Flavoring('spice', this.form)">
+	      </form>
+	    </fieldset>
+      </div>
+	      
+      <div>
+	    <fieldset class="fieldset_flavoring">
+	      <legend>Add Other Flavoring:</legend>
+	      <form onSubmit="addRow_Flavoring('flavoring', this); return false;" novalidate="novalidate">
+		<label for="flavorname">Name:</label>
+		<input type="text" id="flavorname" value="">
+		<p></p>
+		Amt:
+		<input type="text" name="amount" size="3" value="">
+		<select size="1" name="units">
+		  <option value="teaspoons">teaspoons</option>
+		  <option value="ounces">ounces</option>
+		  <option value="grams">grams</option>
+		  <option value="milliliters">milliliters</option>
+		  <option value="fluid-ounces">fluid ounces</option>
+		</select>
+		<br/>
+		Add:
+		<select size="1" name="when">
+		  <option value="boil">Boil</option>
+		  <option value="secondary">Secondary</option>
+		  <option value="bottling">Bottling</option>
+		</select>
+		<p></p>
+		<input value="Add" type="button" onclick="addRow_Flavoring('flavoring', this.form)">
+	      </form>
+	    </fieldset>
+      </div>
+	      
+      <div>
+	<table class="flavorings">
+	  <thead>
+	    <tr>
+	      <th>Delete</th>
+	      <th>Usage</th>
+	      <th>Amount</th>
+	      <th>Hops/Flavorings</th>
+	    </tr>
+	  </thead>
+	  <tbody id="tableFlavorings">
+	    <script language="Javascript" type="text/javascript">
+	      var list = RECIPE.flavorings;
+	      for (var i=0, j=list.length; i<j; i++) {
+		  document.write('<tr>');
+		  document.write('<td>X</td>');
+		  document.write('<td>');
+		  document.write(list[i].usage);
+		  document.write('</td><td>');
+		  document.write(list[i].amount + ' ' + list[i].units);
+		  document.write('</td><td>');
+		  document.write(list[i].name);
+		  document.write('</td>');
+		  document.writeln('</tr>');
+	      }
+	      </script>
+	  </tbody>
+        </table>
+      </div>
+  </details>
 
-<td>Efficiency:
-<select name="eff" size="1" onchange="calcRecipe();">
-  <option value="66">66</option>
-  <option value="70">70</option>
-  <option value="73" selected>73</option>
-  <option value="76">76</option>
-  <option value="79">79</option>
-</select>
-</td></tr>
-</table> 
-</center>
-
-<b>INGREDIENTS:</b>
-<div id="navcontainer">
-   <ul>
-    <li> <a href="#" id="yeastbutton" onclick="addRow('Yeast');">Yeast</a></li>
-    <li> <a href="#" id="hopsbutton" onclick="addRow('Hops');">Hops</a></li>
-    <li> <a href="#" id="maltbutton" onclick="addRow('Malt');">Malt</a></li>
-    <li> <a href="#" id="sugarbutton" onclick="addRow('Sugar');">Sugar</a></li>
-    <li> <a href="#" onclick="addRow('Extract');">Extract</a></li>
-</ul>
+  <details class="section4">
+    <summary>Fermenters (yeast etc.)<span class="required-field"></span></summary>
+    <div style="display:flex; flex-wrap:wrap; margin-top:12px;">
+      <div>
+	<fieldset class="fieldset_fermenter">
+	  <legend>Add Commercial Yeast:</legend>
+	  <form onSubmit="addRow_Fermenter('yeast', this); return false;" novalidate="novalidate">
+	  <form>
+	    <select size="1" name="num">
+	      <script language="Javascript" type="text/javascript">
+		var list = Data.Yeasts;
+		for (var i=0, j=list.length; i<j; i++) {
+		    document.write('<option value="' + i + '">');
+		    document.write(list[i].name);
+		    document.writeln('</option>');
+		}
+		</script>
+	    </select>
+	    <br/>
+	    Amt:
+	    <input type="text" name="amount" size="3" value="">
+	    <select size="1" name="units">
+	      <option value="package">package</option>
+	      <option value="ounces">ounces</option>
+	      <option value="fluidounces">fluid ounces</option>
+	      <option value="millileters">millileters</option>
+	      <option value="grams">grams</option>
+	    </select>
+	    <br/>
+	    Add:
+	    <select size="1" name="when">
+	      <option value="primary">Primary yeast</option>
+	      <option value="secondary">Secondary yeast</option>
+	      <option value="bottling">Bottling yeast</option>
+	    </select>
+	    <p></p>
+	    <input value="Add" type="button" onclick="addRow_Fermenter('yeast', this.form)">
+	  </form>
+	</fieldset>
+      </div>
+      <div>
+	<fieldset class="fieldset_fermenter">
+	  <legend>Add Wild Microbe:</legend>
+	  <form>
+	    <label for="microbename">Microbe name:</label>
+	    <input type="text" id="microbename" value="">
+	    <p></p>
+	    Amt:
+	    <input type="text" name="amount" size="3" value="">
+	    <select size="1" name="units">
+	      <option value="ounces">ounces</option>
+	      <option value="fluidounces">fluid ounces</option>
+	      <option value="millileters">millileters</option>
+	      <option value="grams">grams</option>
+	    </select>
+	    <br/>
+	    Add:
+	    <select size="1" name="when">
+	      <option value="primary">Primary</option>
+	      <option value="secondary">Secondary</option>
+	      <option value="bottling">Bottling</option>
+	    </select>
+	    <p></p>
+	    <input value="Add" type="button" onclick="addRow_Fermenter('microbe', this.form)">
+	  </form>
+	</fieldset>
+      </div>
+	      
+      <div>
+	<table class="fermenters">
+	  <thead>
+	    <tr>
+	      <th>Delete</th>
+	      <th>Usage</th>
+	      <th>Amount</th>
+	      <th>Yeast/Microbes</th>
+	    </tr>
+	  </thead>
+	  <tbody id="tableFermenters">
+	    <script language="Javascript" type="text/javascript">
+	      var list = RECIPE.fermenters;
+	      for (var i=0, j=list.length; i<j; i++) {
+		  document.write('<tr>');
+		  document.write('<td>X</td>');
+		  document.write('<td>');
+		  document.write(list[i].usage);
+		  document.write('</td><td>');
+		  document.write(list[i].amount + ' ' + list[i].units);
+		  document.write('</td><td>');
+		  document.write(Data.Hops[list[i].num]);
+		  document.write('</td>');
+		  document.writeln('</tr>');
+	      }
+	      </script>
+	  </tbody>
+        </table>
+      </div>
+  </details>
+</div>
+  
+  </div>
+  <br style="clear:both;"/>
 </div>
 
-<div id="navcontainer">
-   <ul>
-    <li> <a href="#" onclick="addRow('Cara/Crystal Malt');">Cara/Crystal Malt</a></li>
-    <li> <a href="#" onclick="addRow('Roasted Malt');">Roasted Malt</a></li>
-    <li> <a href="#" onclick="addRow('Specialty Malt');">Specialty Malt</a></li>
-    <li> <a href="#" onclick="addRow('Unmalted Grain');">Unmalted Grain</a></li>
-</ul>
+<!-- Modal popup box -->
+<div id="modal_report" class="mpopup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="mpopupclose">X</span>
+            <h1>BrewStar Recipe</h1>
+        </div>
+        <div id="report_div" class="modal-body">
+        </div>
+        <div class="modal-footer">
+	  <!---
+            <button type="button">Print</button>
+	    --->
+        </div>
+    </div>
 </div>
 
-<div id="navcontainer">
-   <ul>
-    <li> <a href="#" onclick="addRow('Water Treatment');">Water Treatment</a></li>
-    <li> <a href="#" onclick="addRow('Misc');">Misc</a></li>
-</ul>
-</div>
+<script>
+  var recipeDate = document.getElementById("recipeDate");
+  var today = new Date();
+  recipeDate.innerHTML = today.toDateString();
 
+  // Open modal once the button is clicked
+  var mpopupReport = document.getElementById('modal_report');
+  var mpButtonReport = document.getElementById("mpopupButtonReport");
+  mpButtonReport.onclick = function() {}; // disable for now
 
-<table id="tableRecipe" width="100%" border="1" cellpadding="0" cellspacing="0" align="center">
-<thead>
-<tr>
-<th> </th>
-<th bgcolor="#AAAAFF">Amount</th>
-<th bgcolor="#AAAAFF">Ingredient</th>
-<th bgcolor="#AAAAFF">Type/variety</th>
-<th bgcolor="#AAAAFF">How Used</th>
-</tr>
-</table>
+  var mpopupMalts = document.getElementById('modal_malts');
 
-</form>
+  var closers = document.getElementsByClassName("mpopupclose");
+  // Close modal once close element is clicked
+  closers[0].onclick = function() {
+      mpopupReport.style.display = "none";
+  };
 
-<p>
-<div id="messagebox">Add ingredients using buttons.</div>
-<script language="Javascript" type="text/javascript">
-    var hops = document.getElementById("hopsbutton");
-    hops.style = "border: 1px solid #900; background-color:lightyellow;";
-    var yeast = document.getElementById("yeastbutton");
-    yeast.style = "border: 1px solid #900; background-color:lightyellow;";
-    var malt = document.getElementById("maltbutton");
-    malt.style = "border: 1px solid #900; background-color:lightyellow;";
+  // Close modal when user clicks outside of the modal box
+  window.onclick = function(event) {
+      if (event.target == mpopupReport) {
+          mpopupReport.style.display = "none";
+      }
+  };
 </script>
-
-</div>
-</div>
-
-
-<!-- -------------------------------- -->
-
-<div class="tabContent" style="display:none;" id="divstyles">
-
-<table class="styleTable">
-<tr>
-<th>BJCP Style</th>
-<th>Orig. Grav.</th>
-<th>Final Grav.</th>
-<th>IBU</th>
-<th>SRM</th>
-<th>Alc.%</th>
-</tr>
-    <script language="Javascript" type="text/javascript">
-    var list = Data.Styles;
-    for (i=0, j=list.length; i<j; i++)
-    {
-        var style = list[i];
-        document.write('<tr><td>');
-        document.write(style.name);
-        document.write('</td><td>');
-        document.write(style.gravity);
-        document.write('</td><td>');
-        document.write(style.finalgravity);
-        document.write('</td><td>');
-        document.write(style.bitterness);
-        document.write('</td><td>');
-        document.write(style.color);
-        document.write('</td><td>');
-        document.write(style.alcohol);
-        document.writeln('</td></tr>');
-    }
-    </script>
-
-<tr>
-</tr>
-</table>
-</p>
-
-</div>
-
-
-<!-- -------------------------------- -->
-
-<div class="tabContent" style="display:none;" id="divplan">
-
-<p>
-<h2>Brewing Plan</h2>
-
-<div id="plancontent">
-<p>
-
-<div style="color:red;">
-No plan.
-<br>
-Create a recipe first.
-</div>
-
-</div> <!- end of maincontent div -->
 
 </body>
 </html>
